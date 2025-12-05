@@ -47,7 +47,7 @@ export const batchService = async () => {
         const repository = adminDashboardRepository();
         if (!batchId) {
             return {
-                status: "error",
+                status: 400,
                 message: "no batch id provided"
             }
         }
@@ -55,7 +55,7 @@ export const batchService = async () => {
         const res = await repository.delete_batch(batchId);
         if (res.deletedCount > 0) {
             return {
-                status: "success",
+                status: 200,
                 message: "batch deleted successfully"
             }
         }
