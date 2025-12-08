@@ -9,4 +9,5 @@ export interface Batch {
     paymentType: "cod" | "online";
     discount: number;
     skuCode: string;
+    mariginPrice: number
 }

@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { orderRepository } from "../repository/orderRepository";
 import { Orders } from "../types/orders";
 
@@ -5,31 +6,32 @@ export const orderService = async () => {
     const repo = orderRepository();
 
     const create_Order = async (orderData: Orders) => {
-        if (!orderData.customerId) return {
-            status: 400,
-            message: "Customer ID is required"
-        }
-        if (!orderData.items || orderData.items.length === 0) return {
-            status: 400,
-            message: "At least one item is required in the order"
+        if (!orderData.customerId) {
+            return { status: 400, message: "Customer ID is required" };
         }
 
-        orderData.orderId = "ORD-" + Date.now();
+        if (!orderData.items || orderData.items.length === 0) {
+            return { status: 400, message: "At least one item is required" };
+        }
 
-        orderData.status = "pending";
+        const newOrder: Orders = {
+            ...orderData,
+            orderId: `ord_${nanoid(10)}`,
+            status: "pending",
+            totalAmount: orderData.items.reduce(
+                (sum, item) => sum + item.price * item.quantity,
+                0
+            ),
+        };
 
-        orderData.totalAmount = orderData.items.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0
-        );
+        const res = await repo.create_order(newOrder);
 
-        const res = await repo.create_order(orderData);
         return {
             status: 201,
             message: "Order created successfully",
-            data: res
-        }
-    }
+            data: res,
+        };
+    };
 
     const getOrderById = async (orderId: string) => {
         if (!orderId) return {
@@ -38,7 +40,10 @@ export const orderService = async () => {
         }
 
         const order = await repo.get_order_by_id(orderId);
-        if (!order) throw new Error("Order not found");
+        if (!order) return {
+            status: 404,
+            message: "Order not found"
+        }
 
         return order;
     };

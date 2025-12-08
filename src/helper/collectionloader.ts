@@ -3,6 +3,7 @@ import { Admin, Buyer, Runner } from "../types/auth";
 import { getCollection } from "@/src/config/dbConfig";
 import { Batch } from "../types/batch";
 import { Orders } from "../types/orders";
+import { Delivery } from "../types/delivery";
 
 let adminCollection: Collection<Admin> | null = null;
 let buyerCollection: Collection<Buyer> | null = null;
@@ -33,10 +34,16 @@ const getOrderCollection = async () => {
     return orderCollection;
 }
 
+const getDeliveryCollection = async () => {
+    const deliveryCollection = await getCollection<Delivery>('delivery');
+    return deliveryCollection;
+}
+
 export {
     getAdminCollection,
     getBuyerCollection,
     getRunnerCollection,
     getBatchCollection,
-    getOrderCollection
+    getOrderCollection,
+    getDeliveryCollection
 }

@@ -3,7 +3,7 @@ import { Batch } from "@/src/types/batch";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
-    const { batchId, productName, productImage, price, quantity, uom, batchDate, paymentType, discount, skuCode } = await request.json();
+    const { batchId, mariginPrice, productName, productImage, price, quantity, uom, batchDate, paymentType, discount, skuCode } = await request.json();
 
     const batch: Batch = {
         batchId,
@@ -15,7 +15,8 @@ export async function POST(request: NextRequest) {
         batchDate: new Date(batchDate).toISOString(),
         paymentType,
         discount,
-        skuCode
+        skuCode,
+        mariginPrice
     }
 
     const service = await batchService();

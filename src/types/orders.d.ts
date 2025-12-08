@@ -26,3 +26,11 @@ export interface Orders {
     orderDate: string;
     status: "pending" | "shipped" | "delivered";
 }
+
+export interface OrderRunner {
+    runnerId: string;
+    name: string;
+    phone: string;
+    usn: string;
+    department: string;
+}
