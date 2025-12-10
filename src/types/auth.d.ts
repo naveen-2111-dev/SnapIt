@@ -24,8 +24,9 @@ interface Runner extends Admin {
     runner_department: string;
     runner_class_number: string;
     runner_phone_number: string;
-    delivered: Orders[];
+    delivered: string[];
     isAvailable: boolean;
+    currentOrder?: string;
 }
 
 export {
